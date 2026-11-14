@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axel's Page</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #00ff00;
+      background: repeating-linear-gradient(45deg, #ff00ff 0 18px, #00ffff 18px 36px);
+      font-family: "Comic Sans MS", "Courier New", monospace;
+      cursor: crosshair;
+    }
+    main {
+      width: min(94%, 1000px);
+      margin: 25px auto;
+      padding: 28px;
+      text-align: center;
+      background: #ff7f00;
+      border: 14px ridge #7f00ff;
+      box-shadow: 20px 20px 0 #000, -14px -14px 0 #ffff00;
+      transform: rotate(-1deg);
+    }
+    h1 {
+      margin: 0;
+      color: #ffff00;
+      background: #0000ff;
+      border: 9px dotted #ff0000;
+      font-size: clamp(2.5rem, 9vw, 7rem);
+      line-height: .8;
+      text-shadow: 8px 8px #ff00ff, -5px -5px #00ffff;
+      transform: skew(-8deg) rotate(2deg);
+    }
+    p { color: #000; background: #00ff66; font-size: 1.4rem; padding: 12px; }
+    .clock-box {
+      display: inline-block;
+      margin: 14px;
+      padding: 14px 24px;
+      color: #fff;
+      background: #800000;
+      border: 7px double #00ffff;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+    button {
+      margin: 10px;
+      padding: 18px 25px;
+      color: #fff;
+      background: #ff1493;
+      border: 8px outset #39ff14;
+      font: bold 1.4rem "Impact", fantasy;
+      text-transform: uppercase;
+      transform: rotate(3deg);
+    }
+    button:hover { background: #000; color: #ffff00; }
+    table {
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: collapse;
+      color: #000;
+      background: #ffff00;
+      font-size: 1.15rem;
+    }
+    th, td { padding: 14px; border: 6px solid #ff0000; }
+    th { background: #00ffff; color: #ff00ff; }
+    tr:nth-child(even) { background: #7fff00; }
+    .gallery { display: flex; justify-content: space-around; gap: 20px; flex-wrap: wrap; }
+    .spin-picture {
+      width: 220px;
+      height: 170px;
+      object-fit: cover;
+      border: 12px groove #000;
+      background: #fff;
+      cursor: pointer;
+    }
+    .spin-picture.spinning { animation: spin .08s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg) scale(1.15); } }
+    .salute {
+      position: fixed;
+      z-index: 20;
+      pointer-events: none;
+      font-size: 3rem;
+      animation: fall 2.8s linear forwards;
+    }
+    @keyframes fall {
+      from { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>AXEL GREAVETTE</h1>
+    <p>Welcome to Axel's tasteful webpage. Everything here is beautiful and designed with purpose.</p>
+
+    <div class="clock-box" aria-live="polite">
+      Time in the big Normandy: <span id="normandy-clock">Loading...</span>
+    </div>
+
+    <section>
+      <h2>Information Table</h2>
+      <table>
+        <thead>
+          <tr><th>Thing</th><th>Verdict</th><th>Closing Thoughts</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claude</td><td>Get it out of here</td><td>Humanity will prevail.</td></tr>
+          <tr><td>Colourblind</td><td>Yes</td><td>I really am.</td></tr>
+          <tr><td>Good Design</td><td>Yes</td><td>Everything on this page is intentional. It was thought through carefully.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <button id="rain-button" type="button">Make it rain</button>
+    <button id="stop-button" type="button">Stop the nonsense</button>
+
+    <h2>Click either hello.jpg</h2>
+    <div class="gallery">
+      <img class="spin-picture" src="https://preview.redd.it/the-original-cat-from-scientists-reveal-the-hi-v0-0gswrys8wawh1.png?width=498&format=png&auto=webp&s=9e1157ddf3c3528cd44703b3a3db66ddecb91b73" alt="hello.jpg, picture one">
+      <img class="spin-picture" src="https://preview.redd.it/the-original-cat-from-scientists-reveal-the-hi-v0-0gswrys8wawh1.png?width=498&format=png&auto=webp&s=9e1157ddf3c3528cd44703b3a3db66ddecb91b73" alt="hello.jpg, picture two">
+    </div>
+  </main>
+
+  <script>
+    const clock = document.getElementById("normandy-clock");
+    const salutes = [];
+
+    function updateClock() {
+      clock.textContent = new Intl.DateTimeFormat("en-FR", {
+        timeZone: "Europe/Paris",
+        dateStyle: "full",
+        timeStyle: "medium"
+      }).format(new Date());
+    }
+
+    function makeItRain() {
+      for (let i = 0; i < 2400; i += 1) {
+        const salute = document.createElement("span");
+        salute.className = "salute";
+        salute.textContent = "🫡";
+        salute.style.left = `${Math.random() * 100}vw`;
+        salute.style.top = "0";
+        salute.style.animationDelay = `${Math.random() * 1.5}s`;
+        document.body.appendChild(salute);
+        salutes.push(salute);
+        setTimeout(() => salute.remove(), 4500);
+      }
+    }
+
+    document.getElementById("rain-button").addEventListener("click", makeItRain);
+    document.getElementById("stop-button").addEventListener("click", () => {
+      document.querySelectorAll(".salute").forEach((salute) => salute.remove());
+    });
+    document.querySelectorAll(".spin-picture").forEach((picture) => {
+      picture.addEventListener("click", () => picture.classList.toggle("spinning"));
+    });
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
